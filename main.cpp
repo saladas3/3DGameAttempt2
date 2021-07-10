@@ -1,6 +1,7 @@
-#include <iostream>
+#include "GameEngine/WindowingSystem/Window.h"
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+    Window app;
+    while (app.isRunning());
     return 0;
 }
