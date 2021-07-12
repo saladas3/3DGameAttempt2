@@ -5,50 +5,16 @@
 #include "Window.h"
 #include <stdexcept>
 
-LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
-    switch (msg) {
-        case WM_CREATE: {
-            // Event fired when the window is created
-            // collected here..
-
-            break;
-        }
-        case WM_SIZE: {
-            // Event fired when the windows is resized
-            auto *window = (Window *) GetWindowLongPtr(hwnd, GWLP_USERDATA);
-            if (window) window->onSize();
-            break;
-        }
-        case WM_SETFOCUS: {
-            // Event fired when the window get focus
-            auto *window = (Window *) GetWindowLongPtr(hwnd, GWLP_USERDATA);
-            if (window) window->onFocus();
-            break;
-        }
-        case WM_KILLFOCUS: {
-            // Event fired when the window lost focus
-            auto *window = (Window *) GetWindowLongPtr(hwnd, GWLP_USERDATA);
-            window->onKillFocus();
-            break;
-        }
-        case WM_DESTROY: {
-            // Event fired when the window is destroyed
-            auto *window = (Window *) GetWindowLongPtr(hwnd, GWLP_USERDATA);
-            window->onDestroy();
-            ::PostQuitMessage(0);
-            break;
-        }
-
-        default:
-            return ::DefWindowProc(hwnd, msg, wparam, lparam);
-    }
-
-    return NULL;
-}
+// Main message handler for the program
+LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
 Window::Window() {
-    // Setting up WNDCLASSEX object
+    // Setting up WNDCLASSEX object - holds information for the window class
     WNDCLASSEX wc;
+
+    // Clear out the window class for use
+    ZeroMemory(&wc, sizeof(WNDCLASSEX));
+
     wc.cbClsExtra = NULL;
     wc.cbSize = sizeof(WNDCLASSEX);
     wc.cbWndExtra = NULL;
@@ -57,17 +23,17 @@ Window::Window() {
     wc.hIcon = LoadIcon(nullptr, IDI_APPLICATION);
     wc.hIconSm = LoadIcon(nullptr, IDI_APPLICATION);
     wc.hInstance = nullptr;
-    wc.lpszClassName = reinterpret_cast<LPCSTR>(L"MyWindowClass");
-    wc.lpszMenuName = reinterpret_cast<LPCSTR>(L"");
+    wc.lpszClassName = (LPCSTR)"MyWindowClass";
+    wc.lpszMenuName = (LPCSTR)"";
     wc.style = NULL;
-    wc.lpfnWndProc = &WndProc;
+    wc.lpfnWndProc = WndProc;
 
     if (!::RegisterClassEx(&wc)) // If the registration of class will fail, the function will return false
         throw std::exception("Window not created successfully");
 
     // Creation of the window
-    m_hwnd = ::CreateWindowEx(WS_EX_OVERLAPPEDWINDOW, reinterpret_cast<LPCSTR>(L"MyWindowClass"),
-                              reinterpret_cast<LPCSTR>(L"DirectX Application"),
+    m_hwnd = ::CreateWindowEx(WS_EX_OVERLAPPEDWINDOW, (LPCSTR)"MyWindowClass",
+                              (LPCSTR)"Yes Hello",
                               WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 1024, 768,
                               nullptr, nullptr, nullptr, nullptr);
 
@@ -150,3 +116,44 @@ void Window::onSize() {
 }
 
 Window::~Window() = default;
+
+LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
+    switch (msg) {
+        case WM_CREATE: {
+            // Event fired when the window is created
+            // collected here..
+
+            break;
+        }
+        case WM_SIZE: {
+            // Event fired when the windows is resized
+            auto *window = (Window *) GetWindowLongPtr(hwnd, GWLP_USERDATA);
+            if (window) window->onSize();
+            break;
+        }
+        case WM_SETFOCUS: {
+            // Event fired when the window get focus
+            auto *window = (Window *) GetWindowLongPtr(hwnd, GWLP_USERDATA);
+            if (window) window->onFocus();
+            break;
+        }
+        case WM_KILLFOCUS: {
+            // Event fired when the window lost focus
+            auto *window = (Window *) GetWindowLongPtr(hwnd, GWLP_USERDATA);
+            window->onKillFocus();
+            break;
+        }
+        case WM_DESTROY: {
+            // Event fired when the window is destroyed
+            auto *window = (Window *) GetWindowLongPtr(hwnd, GWLP_USERDATA);
+            window->onDestroy();
+            ::PostQuitMessage(0);
+            break;
+        }
+
+        default:
+            return ::DefWindowProc(hwnd, msg, wparam, lparam);
+    }
+
+    return NULL;
+}

@@ -1,7 +1,7 @@
-#include "GameEngine/WindowingSystem/Window.h"
+#include "Game/MainGame.h"
 
 int main() {
-    Window app;
-    while (app.isRunning());
+    MainGame Game;
+    while (Game.isRunning());
     return 0;
 }

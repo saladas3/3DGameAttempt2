@@ -1,6 +1,7 @@
-//
-// Created by lucai on 10.07.2021.
-//
+/*
+ Created by lucai on 10.07.2021.
+ The main class that will handle all of the game resources.
+*/
 
 #ifndef INC_3DGAME_MAINGAME_H
 #define INC_3DGAME_MAINGAME_H
@@ -17,33 +18,24 @@ public:
 
     ~MainGame();
 
-    // Inherited via Window
+    /* Inherited via Window */
     void onCreate() override;
-
     void onUpdate() override;
-
     void onDestroy() override;
-
     void onFocus() override;
-
     void onKillFocus() override;
-
     void onSize() override;
+    /* -------------------- */
 
-    // Inherited via InputListener
+    /* Inherited via InputListener */
     void onKeyDown(int key) override;
-
     void onKeyUp(int key) override;
-
     void onMouseMove(const Point &mouse_pos) override;
-
     void onLeftMouseDown(const Point &mouse_pos) override;
-
     void onLeftMouseUp(const Point &mouse_pos) override;
-
     void onRightMouseDown(const Point &mouse_pos) override;
-
     void onRightMouseUp(const Point &mouse_pos) override;
+    /* --------------------------- */
 
 };
 

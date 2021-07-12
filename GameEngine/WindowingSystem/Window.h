@@ -42,7 +42,10 @@ public:
     ~Window();
 
 protected:
+    // The handle for the window
     HWND m_hwnd = nullptr;
+
+    // Utility members
     bool m_is_running = true;
     bool m_is_init = false;
 
