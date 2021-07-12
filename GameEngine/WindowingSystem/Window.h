@@ -5,8 +5,9 @@
 #ifndef INC_3DGAME_WINDOW_H
 #define INC_3DGAME_WINDOW_H
 
-#include <Windows.h>
+#pragma once
 
+#include <Windows.h>
 
 class Window {
 public:
@@ -46,6 +47,5 @@ protected:
     bool m_is_init = false;
 
 };
-
 
 #endif //INC_3DGAME_WINDOW_H
